@@ -1,0 +1,8 @@
+{
+  "username": "ユーザー名",
+  "password": "パスワード",
+  "rememberMe": "ログイン情報を記憶する",
+  "submit": "送信",
+  "inputYourUsername": "ユーザー名を入力してください！",
+  "inputYourPassword": "パスワードを入力してください！"
+}

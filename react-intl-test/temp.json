@@ -1,0 +1,20 @@
+{
+  "inputYourPassword": {
+    "defaultMessage": "请输入密码！"
+  },
+  "inputYourUsername": {
+    "defaultMessage": "请输入用户名！"
+  },
+  "password": {
+    "defaultMessage": "密码"
+  },
+  "rememberMe": {
+    "defaultMessage": "记住我"
+  },
+  "submit": {
+    "defaultMessage": "提交"
+  },
+  "username": {
+    "defaultMessage": "用户名"
+  }
+}
