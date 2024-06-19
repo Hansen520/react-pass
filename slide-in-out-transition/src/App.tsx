@@ -9,6 +9,7 @@ import Spring from './Spring';
 import Transition from './Transition';
 import "./App.css";
 import { SlideInOverlay } from "./SlideInOverlay";
+import Chain from './Chain';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -17,6 +18,7 @@ function App() {
     <>
       <Spring />
       <Transition />
+      <Chain />
       <button
         onClick={() => {
           setShow(true);
