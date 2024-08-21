@@ -10,24 +10,24 @@ export function EditArea() {
   const { components, addComponent, deleteComponent, updateComponentProps } = useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
   useEffect(() => {
-    addComponent(
-      {
-        id: 222,
-        name: "Container",
-        props: {},
-        children: [],
-      },
-      1
-    );
+  //   addComponent(
+  //     {
+  //       id: 222,
+  //       name: "Container",
+  //       props: {},
+  //       children: [],
+  //     },
+  //     1
+  //   );
 
-    addComponent({
-      id: 333,
-      name: 'Button',
-      props: {
-          text: '这是一段按钮的文本域'
-      },
-      children: []
-  }, 222);
+  //   addComponent({
+  //     id: 333,
+  //     name: 'Button',
+  //     props: {
+  //         text: '这是一段按钮的文本域'
+  //     },
+  //     children: []
+  // }, 222);
 
     // setTimeout(() => {
     //   deleteComponent(333);
