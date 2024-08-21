@@ -1,12 +1,14 @@
 /*
  * @Date: 2024-08-20 15:47:35
- * @Description: description
+ * @Description: 编辑区域
  */
-import { useEffect } from "react";
-import { useComponentsStore } from "../stores/components";
+import React, { useEffect, ReactNode, createElement } from "react";
+import { Component, useComponentsStore } from "../stores/components";
+import { useComponentConfigStore } from "../stores/component-config";
 
 export function EditArea() {
   const { components, addComponent, deleteComponent, updateComponentProps } = useComponentsStore();
+  const { componentConfig } = useComponentConfigStore();
   useEffect(() => {
     addComponent(
       {
@@ -18,30 +20,55 @@ export function EditArea() {
       1
     );
 
-    addComponent(
-      {
-        id: 333,
-        name: "Video",
-        props: {},
-        children: [],
+    addComponent({
+      id: 333,
+      name: 'Button',
+      props: {
+          text: '这是一段按钮的文本域'
       },
-      222
-    );
+      children: []
+  }, 222);
 
-    setTimeout(() => {
-      deleteComponent(333);
-    }, 3000);
+    // setTimeout(() => {
+    //   deleteComponent(333);
+    // }, 3000);
 
-    updateComponentProps(222, {
-      window: 'OS',
-      title: 'Hello World',
-      
-    });
+    // updateComponentProps(222, {
+    //   window: 'OS',
+    //   title: 'Hello World',
+
+    // });
   }, []);
+  console.log(components, 42);
+
+  /* 递归渲染组件 */
+  function renderComponents(components: Component[]): React.ReactNode {
+    return components.map((component: Component) => {
+        const config = componentConfig?.[component.name]
+
+        if (!config?.component) {
+            return null;
+        }
+        console.log(config.component, 51);
+        
+        return createElement(
+            config.component,
+            {
+                key: component.id,
+                id: component.id,
+                name: component.name,
+                ...config.defaultProps,
+                ...component.props,
+            },
+            renderComponents(component.children || [])
+        )
+    })
+}
 
   return (
-    <div>
-      <pre>{JSON.stringify(components, null, 2)}</pre>
+    <div className="h-[100%]">
+      {/* <pre>{JSON.stringify(components, null, 2)}</pre> */}
+      {renderComponents(components)}
     </div>
   );
 }
