@@ -5,11 +5,16 @@
 import { CommonComponentProps } from "../../interface";
 import { useMaterialDrop } from "../../hooks/useMaterialDrop";
 
-const Container = ({ id, children }: CommonComponentProps) => {
+const Container = ({ id, children, styles }: CommonComponentProps) => {
   const { dropRef } = useMaterialDrop(["Button", "Container"], id);
 
   return (
-    <div data-component-id={id} ref={dropRef} className="border-[1px] border-[#000] min-h-[100px] p-[20px]">
+    <div
+      style={styles}
+      data-component-id={id}
+      ref={dropRef}
+      className="border-[1px] border-[#000] min-h-[100px] p-[20px]"
+    >
       {children}
     </div>
   );

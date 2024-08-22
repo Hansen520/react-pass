@@ -6,7 +6,7 @@ import { CommonComponentProps } from "../../interface";
 import { useMaterialDrop } from "../../hooks/useMaterialDrop";
 
 
-function Page({ id, name, children }: CommonComponentProps) {
+function Page({ id, styles, children }: CommonComponentProps) {
 
   const { canDrop, dropRef } = useMaterialDrop(["Button", "Container"], id);
 
@@ -16,6 +16,7 @@ function Page({ id, name, children }: CommonComponentProps) {
       ref={dropRef}
       className="p-[20px] h-[100%] box-border"
       style={{
+        ...styles,
         border: canDrop ? "2px solid red" : "none",
       }}
     >

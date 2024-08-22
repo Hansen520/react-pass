@@ -28,6 +28,7 @@ export function EditArea() {
 
   /* 递归渲染组件 */
   function renderComponents(components: Component[]): React.ReactNode {
+    console.log(components, 31);
     return components.map((component: Component) => {
       const config = componentConfig?.[component.name];
 
@@ -42,6 +43,7 @@ export function EditArea() {
           key: component.id,
           id: component.id,
           name: component.name,
+          styles: component.styles,
           ...config.defaultProps,
           ...component.props,
         },
@@ -65,7 +67,7 @@ export function EditArea() {
       }
     }
   };
-  console.log(hoverComponentId, curComponentId, 68)
+  // console.log(hoverComponentId, curComponentId, 68)
   return (
     <div
       className="h-[100%] edit-area"
