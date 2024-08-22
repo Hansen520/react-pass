@@ -19,7 +19,7 @@ export function EditArea() {
       if (!config?.component) {
         return null;
       }
-      console.log(config.component, 51);
+      // console.log(config.component, 51);
 
       return createElement(
         config.component,

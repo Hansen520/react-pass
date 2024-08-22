@@ -26,6 +26,7 @@ function HoverMask({ containerClassName, portalWrapperClassName, componentId }: 
   const { components } = useComponentsStore();
 
   useEffect(() => {
+    // console.log(componentId, 29);
     updatePosition();
   }, [componentId]);
 
@@ -33,16 +34,16 @@ function HoverMask({ containerClassName, portalWrapperClassName, componentId }: 
   function updatePosition() {
     if (!componentId) return;
 
-    const container = document.querySelector(`.${containerClassName}`);
+    const container = document.querySelector(`.${containerClassName}`); // 距离整个容器上面的距离
     if (!container) return;
 
     const node = document.querySelector(`[data-component-id="${componentId}"]`);
     if (!node) return;
 
-    const { top, left, width, height } = node.getBoundingClientRect();
+    const { top, left, width, height } = node.getBoundingClientRect(); // 每一个组件容器
     const { top: containerTop, left: containerLeft } = container.getBoundingClientRect();
-
-    let labelTop = top - containerTop + container.scrollTop;
+    // console.log(top, containerTop, container.scrollTop, 45);
+    let labelTop = top - containerTop + container.scrollTop; // 距上面 -  容器 + 滚动条
     const labelLeft = left - containerLeft + width;
 
     if (labelTop <= 0) {
@@ -52,7 +53,7 @@ function HoverMask({ containerClassName, portalWrapperClassName, componentId }: 
     // 设置mask的位置
     setPosition({
       top: top - containerTop + container.scrollTop,
-      left: left - containerLeft + container.scrollTop,
+      left: left - containerLeft + container.scrollLeft,
       width,
       height,
       labelTop,
