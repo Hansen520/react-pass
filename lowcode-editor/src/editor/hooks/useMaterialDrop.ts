@@ -14,12 +14,13 @@ export function useMaterialDrop(accept: string[], id: number) {
         accept,
         drop: (item: { type: string}, monitor) => {
             const didDrop = monitor.didDrop()
+            // 防止已经拖拽过的组件目标重复拖拽，所以我们要精准拖拽
             if (didDrop) {
               return;
             }
 
             const props = componentConfig[item.type].defaultProps;
-
+            /* 往页面上增加组件 */
             addComponent({
                 id: new Date().getTime(),
                 name: item.type,
