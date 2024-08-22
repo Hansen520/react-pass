@@ -1,19 +1,17 @@
-/*
- * @Date: 2024-08-22 10:31:06
- * @Description: description
- */
-
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+
+import { Popconfirm, Space, Dropdown } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import { getComponentById, useComponentsStore } from "../stores/components";
 
-interface HoverMaskProps {
+interface SelectedMaskProps {
+  portalWrapperClassName: string;
   containerClassName: string;
   componentId: number;
-  portalWrapperClassName: string;
 }
 
-function HoverMask({ containerClassName, portalWrapperClassName, componentId }: HoverMaskProps) {
+function SelectedMask({ containerClassName, portalWrapperClassName, componentId }: SelectedMaskProps) {
   const [position, setPosition] = useState({
     left: 0,
     top: 0,
@@ -23,12 +21,12 @@ function HoverMask({ containerClassName, portalWrapperClassName, componentId }: 
     labelLeft: 0,
   });
 
-  const { components } = useComponentsStore();
+  const { components, curComponentId, deleteComponent, setCurComponentId } = useComponentsStore();
 
   useEffect(() => {
-    // console.log(componentId, 29);
     updatePosition();
   }, [componentId]);
+
 
   useEffect(() => {
     updatePosition();
@@ -37,37 +35,36 @@ function HoverMask({ containerClassName, portalWrapperClassName, componentId }: 
   useEffect(() => {
     const resizeHandler = () => {
       updatePosition();
-    };
+    }
     window.addEventListener("resize", resizeHandler);
     return () => {
       window.removeEventListener("resize", resizeHandler);
-    };
+    }
   }, []);
 
-  /* 更新位置 */
+
   function updatePosition() {
     if (!componentId) return;
 
-    const container = document.querySelector(`.${containerClassName}`); // 距离整个容器上面的距离
+    const container = document.querySelector(`.${containerClassName}`);
     if (!container) return;
 
     const node = document.querySelector(`[data-component-id="${componentId}"]`);
     if (!node) return;
 
-    const { top, left, width, height } = node.getBoundingClientRect(); // 每一个组件容器
+    const { top, left, width, height } = node.getBoundingClientRect();
     const { top: containerTop, left: containerLeft } = container.getBoundingClientRect();
-    // console.log(top, containerTop, container.scrollTop, 45);
-    let labelTop = top - containerTop + container.scrollTop; // 距上面 -  容器 + 滚动条
+
+    let labelTop = top - containerTop + container.scrollTop;
     const labelLeft = left - containerLeft + width;
 
     if (labelTop <= 0) {
       labelTop -= -20;
     }
 
-    // 设置mask的位置
     setPosition({
       top: top - containerTop + container.scrollTop,
-      left: left - containerLeft + container.scrollLeft,
+      left: left - containerLeft + container.scrollTop,
       width,
       height,
       labelTop,
@@ -83,16 +80,22 @@ function HoverMask({ containerClassName, portalWrapperClassName, componentId }: 
     return getComponentById(componentId, components);
   }, [componentId]);
 
-  // const el = useMemo(() => {
-  //   const el = document.createElement("div");
-  //   el.className = `wrapper`;
+  function handleDelete() {
+    deleteComponent(curComponentId!);
+    setCurComponentId(null);
+  }
 
-  //   const container = document.querySelector(`.${containerClassName}`);
-  //   container?.appendChild(el);
-  //   return el;
-  // }, []);
+  const parentComponents = useMemo(() => {
+    const parentComponents = [];
+    let component = curComponent;
 
-  // 往el里面筛节点数据
+    while (component?.parentId) {
+      component = getComponentById(component.parentId, components);
+      parentComponents.push(component);
+    }
+    return parentComponents;
+  }, [curComponent]);
+
   return createPortal(
     <>
       <div
@@ -105,7 +108,7 @@ function HoverMask({ containerClassName, portalWrapperClassName, componentId }: 
           pointerEvents: "none",
           width: position.width,
           height: position.height,
-          zIndex: 12,
+          zIndex: 13,
           borderRadius: 4,
           boxSizing: "border-box",
         }}
@@ -121,22 +124,45 @@ function HoverMask({ containerClassName, portalWrapperClassName, componentId }: 
           transform: "translate(-100%, -100%)",
         }}
       >
-        <div
-          style={{
-            padding: "0 8px",
-            backgroundColor: "blue",
-            borderRadius: 4,
-            color: "#fff",
-            cursor: "pointer",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {curComponent?.desc}
-        </div>
+        <Space>
+          <Dropdown
+            menu={{
+              items: parentComponents.map((item) => ({
+                key: item!.id,
+                label: item!.name,
+              })),
+              onClick: ({ key }) => {
+                setCurComponentId(+key);
+              },
+            }}
+            disabled={parentComponents.length === 0}
+          >
+            <div
+              style={{
+                padding: "0 8px",
+                backgroundColor: "blue",
+                borderRadius: 4,
+                color: "#fff",
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {curComponent?.desc}
+            </div>
+          </Dropdown>
+
+          {curComponentId !== 1 && (
+            <div style={{ padding: "0 8px", backgroundColor: "blue" }}>
+              <Popconfirm title="确认删除？" okText={"确认"} cancelText={"取消"} onConfirm={handleDelete}>
+                <DeleteOutlined style={{ color: "#fff" }} />
+              </Popconfirm>
+            </div>
+          )}
+        </Space>
       </div>
     </>,
     el
   );
 }
 
-export default HoverMask;
+export default SelectedMask;

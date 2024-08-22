@@ -2,14 +2,29 @@
  * @Date: 2024-08-20 15:47:35
  * @Description: 编辑区域
  */
-import React, { useState, useEffect, ReactNode, createElement, MouseEventHandler } from "react";
+import React, { useState, createElement, MouseEventHandler } from "react";
 import { Component, useComponentsStore } from "../stores/components";
 import { useComponentConfigStore } from "../stores/component-config";
 import HoverMask from "./hoverMask";
+import SelectedMask from './SelectedMask';
 
 export function EditArea() {
-  const { components, addComponent, deleteComponent, updateComponentProps } = useComponentsStore();
+  const { components, curComponentId, setCurComponentId } = useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
+
+  const handleClick: MouseEventHandler = (e) => {
+    const path = e.nativeEvent.composedPath();
+
+    for (let i = 0; i < path.length; i += 1) {
+      const ele = path[i] as HTMLElement;
+
+      const componentId = ele.dataset?.componentId;
+      if (componentId) {
+        setCurComponentId(+componentId);
+        return;
+      }
+    }
+  };
 
   /* 递归渲染组件 */
   function renderComponents(components: Component[]): React.ReactNode {
@@ -50,7 +65,7 @@ export function EditArea() {
       }
     }
   };
-
+  console.log(hoverComponentId, curComponentId, 68)
   return (
     <div
       className="h-[100%] edit-area"
@@ -58,14 +73,23 @@ export function EditArea() {
       onMouseLeave={() => {
         setHoverComponentId(undefined);
       }}
+      onClick={handleClick}
     >
       {/* <pre>{JSON.stringify(components, null, 2)}</pre> */}
       {renderComponents(components)}
-      {hoverComponentId && (
+      
+      {hoverComponentId && hoverComponentId !== curComponentId && (
         <HoverMask
           portalWrapperClassName="portal-wrapper"
           containerClassName="edit-area"
           componentId={hoverComponentId}
+        />
+      )}
+      {curComponentId && (
+        <SelectedMask
+          portalWrapperClassName="portal-wrapper"
+          containerClassName="edit-area"
+          componentId={curComponentId}
         />
       )}
       <div className="portal-wrapper"></div>

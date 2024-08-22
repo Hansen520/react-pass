@@ -19,12 +19,14 @@ export function useMaterialDrop(accept: string[], id: number) {
               return;
             }
 
-            const props = componentConfig[item.type].defaultProps;
+            // const props = componentConfig[item.type].defaultProps;
+            const config = componentConfig[item.type];
             /* 往页面上增加组件 */
             addComponent({
                 id: new Date().getTime(),
                 name: item.type,
-                props
+                desc: config.desc,
+                props: config.defaultProps
             }, id)
         },
         collect: (monitor) => ({
