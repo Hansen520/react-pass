@@ -3,22 +3,47 @@
  * @Description: description
  */
 import { Form, Input, InputNumber, Select } from "antd";
-import { CSSProperties, useEffect } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { useComponentsStore } from "../stores/components";
 import { ComponentSetter, useComponentConfigStore } from "../stores/component-config";
 import CssEditor from "./CssEditor";
 import { debounce } from "lodash-es";
+import styleToObject from "style-to-object";
 
 export function ComponentStyle() {
   const [form] = Form.useForm();
 
   const { curComponentId, curComponent, updateComponentStyles } = useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
+  const [css, setCss] = useState("");
 
   useEffect(() => {
+
+    form.resetFields();
+
     const data = form.getFieldsValue();
     form.setFieldsValue({ ...data, ...curComponent?.styles });
+
+    setCss(toCSSStr(curComponent?.styles!));
   }, [curComponent]);
+
+  /* 重置CSS编辑器里面的样式 */
+  function toCSSStr(css: Record<string, any>) {
+    let str = `.comp {\n`;
+    for(const key in css) {
+        let value = css[key];
+        if(!value) {
+            continue;
+        }
+        if(['width', 'height'].includes(key) &&  !value.toString().endsWith('px')) {
+            value += 'px';
+        }
+
+        str += `\t${key}: ${value};\n`
+    }
+    str += `}`;
+    return str;
+}
 
   if (!curComponentId || !curComponent) return null;
 
@@ -40,8 +65,24 @@ export function ComponentStyle() {
     }
   }
 
-  const handleEditorChange = debounce((valiue) => {
-    console.log(valiue);
+  const handleEditorChange = debounce((value) => {
+    // console.log(valiue);
+    setCss(value);
+    const css: Record<string, any> = {};
+    try {
+      const cssStr = value
+        .replace(/\/\*.*\*\//, "") // 去掉注释 /** */
+        .replace(/(\.?[^{]+{)/, "") // 去掉 .comp {
+        .replace("}", ""); // 去掉 }
+
+      styleToObject(cssStr, (name, value) => {
+        css[name.replace(/-\w/, (item) => item.toUpperCase().replace("-", ""))] = value;
+      });
+      console.log(css);
+      updateComponentStyles(curComponentId, {...form.getFieldsValue(), ...css}, true);
+    } catch (e) {
+      console.log(e);
+    }
   }, 500);
 
   return (
@@ -52,7 +93,7 @@ export function ComponentStyle() {
         </Form.Item>
       ))}
       <div className="h-[200px] border-[1px] border-[#ccc]">
-        <CssEditor value={`.comp{\n\n}`} onChange={handleEditorChange} />
+        <CssEditor value={css} onChange={handleEditorChange} />
       </div>
     </Form>
   );
