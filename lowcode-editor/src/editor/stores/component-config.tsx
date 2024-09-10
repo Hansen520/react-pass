@@ -3,9 +3,12 @@
  * @Description: description
  */
 import { create } from "zustand";
-import Container from "../materials/Container";
-import Button from "../materials/Button";
-import Page from "../materials/Page";
+import ContainerDev from "../materials/Container/dev";
+import ContainerProd from "../materials/Container/prod";
+import ButtonDev from "../materials/Button/dev";
+import ButtonProd from "../materials/Button/prod";
+import PageDev from "../materials/Page/dev";
+import PageProd from "../materials/Page/prod";
 
 export interface ComponentSetter {
   name: string;
@@ -14,13 +17,21 @@ export interface ComponentSetter {
   [key: string]: any;
 }
 
+export interface ComponentEvent {
+  name: string;
+  label: string;
+}
+
 export interface ComponentConfig {
   name: string;
   defaultProps: Record<string, any>;
   desc: string;
   setter?: ComponentSetter[]; // 组件的属性配置
   stylesSetter?: ComponentSetter[]; // 组件的样式配置
-  component: any;
+  events?: ComponentEvent[]; // 组件的事件配置
+  // component: any;
+  dev: any; // 开发环境下的组件()
+  prod: any; // 生产环境下的组件(预览组件，比方说组件日期会跳出来)
 }
 
 interface State {
@@ -37,7 +48,8 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       name: "Container",
       defaultProps: {},
       desc: "容器",
-      component: Container, // 拿到对应的组件做后续的渲染
+      dev: ContainerDev, // 拿到对应的组件做后续的渲染
+      prod: ContainerProd,
     },
     Button: {
       name: "Button",
@@ -74,14 +86,15 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
           type: "inputNumber",
         },
       ],
-
-      component: Button,
+      dev: ButtonDev, // 拿到对应的组件做后续的渲染
+      prod: ButtonProd,
     },
     Page: {
       name: "Page",
       defaultProps: {},
       desc: "页面",
-      component: Page,
+      dev: PageDev, // 拿到对应的组件做后续的渲染
+      prod: PageProd,
     },
   },
   /* 注册新的组件 */

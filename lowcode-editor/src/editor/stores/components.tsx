@@ -17,6 +17,7 @@ export interface Component {
 
 interface State {
   components: Component[];
+  mode: 'edit' | 'preview';
   curComponentId?: number | null;
   curComponent: Component | null;
 }
@@ -27,6 +28,7 @@ interface Action {
   updateComponentProps: (componentId: number, props: any) => void;
   updateComponentStyles: (componentId: number, styles: CSSProperties, replace?: boolean/* 是否支持整个替换样式 */) => void;
   setCurComponentId: (componentId: number | null) => void;
+  setMode: (mode: State['mode']) => void;
 }
 
 export const useComponentsStore = create<State & Action>((set, get) => ({
@@ -40,6 +42,8 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
   ],
   curComponentId: null,
   curComponent: null,
+  mode: 'edit',
+  setMode: (mode) => set({ mode }),
   setCurComponentId: (componentId) =>
     set((state) => ({
       curComponentId: componentId,

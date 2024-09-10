@@ -32,13 +32,13 @@ export function EditArea() {
     return components.map((component: Component) => {
       const config = componentConfig?.[component.name];
 
-      if (!config?.component) {
+      if (!config?.dev) {
         return null;
       }
       // console.log(config.component, 51);
 
       return createElement(
-        config.component,
+        config.dev,
         {
           key: component.id,
           id: component.id,
