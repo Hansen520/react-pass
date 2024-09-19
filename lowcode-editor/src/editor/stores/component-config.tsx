@@ -86,6 +86,17 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
           type: "inputNumber",
         },
       ],
+      events: [
+        {
+          name: "onClick",
+          label: "点击事件",
+        },
+        {
+          name: "onDoubleClick",
+          label: "双击事件",
+        },
+      ],
+
       dev: ButtonDev, // 拿到对应的组件做后续的渲染
       prod: ButtonProd,
     },
