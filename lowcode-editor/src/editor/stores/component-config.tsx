@@ -7,8 +7,8 @@ import ContainerDev from "../materials/Container/dev";
 import ContainerProd from "../materials/Container/prod";
 import ButtonDev from "../materials/Button/dev";
 import ButtonProd from "../materials/Button/prod";
-import PageDev from "../materials/Page/dev";
-import PageProd from "../materials/Page/prod";
+import PageDev from "../materials/Page/dev"; /* 用于编辑环境 */
+import PageProd from "../materials/Page/prod"; /* 用于预览环境 */
 
 export interface ComponentSetter {
   name: string;

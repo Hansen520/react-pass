@@ -7,7 +7,8 @@ import { Component, useComponentsStore } from "../stores/components";
 import { useComponentConfigStore } from "../stores/component-config";
 import { message } from "antd";
 import { GoToLinkConfig } from "./actions/GoToLink";
-import { ShowMessageConfig } from "./actions/ShowMessage";
+import { ShowMessage, ShowMessageConfig } from "./actions/ShowMessage";
+import { ActionConfig } from "./ActionModal";
 
 export function Preview() {
   const { components } = useComponentsStore();
@@ -21,15 +22,24 @@ export function Preview() {
 
       if (eventConfig) {
         props[event.name] = () => {
-          eventConfig?.actions?.forEach((action: GoToLinkConfig | ShowMessageConfig) => {
+          eventConfig?.actions?.forEach((action: ActionConfig) => {
             if (action.type === "goToLink" && action?.url) {
-              window.location.href = action.url;
+              window.location.href = action.url; // 链接跳转
             } else if (action.type === "showMessage" && action?.config) {
               if (action.config.type === "success") {
                 message.success(action.config.text);
               } else if (action.config.type === "error") {
                 message.error(action.config.text);
               }
+            } else if (action.type === 'customJS') {
+                const func = new Function('context', action.code); // 这个可以把字符串改为可执行的js运行代码
+                func({
+                    name: component.name,
+                    props: component.props,
+                    showMessage(content: string) {
+                        message.success(content);
+                    }
+                });
             }
           });
         };
