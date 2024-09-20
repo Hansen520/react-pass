@@ -5,7 +5,7 @@
 import { CSSProperties, PropsWithChildren } from 'react';
 
 export interface CommonComponentProps extends PropsWithChildren {
-    id: string | undefined;
+    id: number;
     name: string;
     styles?: CSSProperties;
     [key: string]: any;

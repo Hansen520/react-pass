@@ -7,7 +7,7 @@ import { useMaterialDrop } from "../../hooks/useMaterialDrop";
 
 const Dev = ({ id, children, styles }: CommonComponentProps) => {
   const { dropRef } = useMaterialDrop(["Button", "Container"], id);
-
+  console.log('container');
   return (
     <div
       style={styles}

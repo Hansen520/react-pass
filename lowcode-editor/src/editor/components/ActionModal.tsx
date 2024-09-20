@@ -7,7 +7,9 @@ import { Modal, Segmented } from "antd";
 import { GoToLink, GoToLinkConfig } from "./actions/GoToLink";
 import { ShowMessage, ShowMessageConfig } from "./actions/ShowMessage";
 import { CustomJS, CustomJSConfig } from "./actions/CustomJS";
-export type ActionConfig = GoToLinkConfig | ShowMessageConfig | CustomJSConfig;
+import { ComponentMethod, ComponentMethodConfig } from "./actions/ComponentMethod";
+
+export type ActionConfig = GoToLinkConfig | ShowMessageConfig | CustomJSConfig | ComponentMethodConfig;
 
 interface ActionModalProps {
   // TODO: Define props
@@ -47,9 +49,10 @@ function ActionModal(props: ActionModalProps) {
       onCancel={handleCancel}
     >
       <div className="h-[500px]">
-        <Segmented value={key} onChange={setKey} block options={["访问链接", "消息提示", "自定义 JS"]} />
+        <Segmented value={key} onChange={setKey} block options={["访问链接", "消息提示", "组件方法", "自定义 JS"]} />
         {key === "访问链接" && (
           <GoToLink
+            key="goToLink"
             value={action?.type === "goToLink" ? action.url : ""}
             onChange={(config) => {
               console.log(config);
@@ -59,6 +62,7 @@ function ActionModal(props: ActionModalProps) {
         )}
         {key === "消息提示" && (
           <ShowMessage
+            key="showMessage"
             value={action?.type === "showMessage" ? action.config : undefined}
             onChange={(config) => {
               console.log(config);
@@ -66,8 +70,18 @@ function ActionModal(props: ActionModalProps) {
             }}
           />
         )}
+        {key === "组件方法" && (
+          <ComponentMethod
+            key="componentMethod"
+            value={action?.type === "componentMethod" ? action.config : undefined}
+            onChange={(config) => {
+              setCurConfig(config);
+            }}
+          />
+        )}
         {key === "自定义 JS" && (
           <CustomJS
+            key="customJS"
             value={action?.type === "customJS" ? action.code : ""}
             onChange={(config) => {
               setCurConfig(config);

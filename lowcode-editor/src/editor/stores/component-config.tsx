@@ -9,6 +9,8 @@ import ButtonDev from "../materials/Button/dev";
 import ButtonProd from "../materials/Button/prod";
 import PageDev from "../materials/Page/dev"; /* 用于编辑环境 */
 import PageProd from "../materials/Page/prod"; /* 用于预览环境 */
+import ModalDev from "../materials/Modal/dev"; /* 用于编辑环境 */
+import ModalProd from "../materials/Modal/prod"; /* 用于预览环境 */
 
 export interface ComponentSetter {
   name: string;
@@ -22,6 +24,11 @@ export interface ComponentEvent {
   label: string;
 }
 
+export interface ComponentMethod {
+  name: string;
+  label: string;
+}
+
 export interface ComponentConfig {
   name: string;
   defaultProps: Record<string, any>;
@@ -29,6 +36,7 @@ export interface ComponentConfig {
   setter?: ComponentSetter[]; // 组件的属性配置
   stylesSetter?: ComponentSetter[]; // 组件的样式配置
   events?: ComponentEvent[]; // 组件的事件配置
+  methods?: ComponentMethod[]; // 组件的方法配置
   // component: any;
   dev: any; // 开发环境下的组件()
   prod: any; // 生产环境下的组件(预览组件，比方说组件日期会跳出来)
@@ -51,6 +59,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       dev: ContainerDev, // 拿到对应的组件做后续的渲染
       prod: ContainerProd,
     },
+
     Button: {
       name: "Button",
       defaultProps: {
@@ -96,9 +105,45 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
           label: "双击事件",
         },
       ],
-
       dev: ButtonDev, // 拿到对应的组件做后续的渲染
       prod: ButtonProd,
+    },
+    Modal: {
+      name: "Modal",
+      defaultProps: {
+        title: "弹窗",
+      },
+      setter: [
+        {
+          name: "title",
+          label: "标题",
+          type: "input",
+        },
+      ],
+      stylesSetter: [],
+      events: [
+        {
+          name: "onOk",
+          label: "确认事件",
+        },
+        {
+          name: "onCancel",
+          label: "取消事件",
+        },
+      ],
+      methods: [
+        {
+          name: "open",
+          label: "打开弹窗",
+        },
+        {
+          name: "close",
+          label: "关闭弹窗",
+        },
+      ],
+      desc: "弹窗",
+      dev: ModalDev,
+      prod: ModalProd,
     },
     Page: {
       name: "Page",

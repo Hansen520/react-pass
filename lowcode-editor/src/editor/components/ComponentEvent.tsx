@@ -4,14 +4,14 @@
  */
 import { useState } from "react";
 import { Collapse, Select, CollapseProps, Button } from "antd";
-import { useComponentsStore } from "../stores/components";
+import { getComponentById, useComponentsStore } from "../stores/components";
 import { ComponentEvent, useComponentConfigStore } from "../stores/component-config";
 import { ActionConfig, ActionModal } from "./ActionModal";
 // import ActionModal from "./ActionModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 export function ComponentEvent2() {
-  const { curComponentId, curComponent, updateComponentProps } = useComponentsStore();
+  const { components, curComponentId, curComponent, updateComponentProps } = useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
   const [actionModalOpen, setActionModalOpen] = useState(false);
   const [curEvent, setCurEvent] = useState<ComponentEvent>();
@@ -46,7 +46,6 @@ export function ComponentEvent2() {
   }
 
   const items: CollapseProps["items"] = (componentConfig[curComponent.name].events || []).map((event) => {
-
     return {
       key: event.name,
       label: (
@@ -111,6 +110,26 @@ export function ComponentEvent2() {
                 {item.type === "customJS" ? (
                   <div key="customJS" className="border border-[#aaa] m-[10px] p-[10px] relative">
                     <div className="text-[blue]">自定义 JS</div>
+                    <div
+                      style={{ position: "absolute", top: 10, right: 30, cursor: "pointer" }}
+                      onClick={() => editAction(item, index)}
+                    >
+                      <EditOutlined />
+                    </div>
+                    <div
+                      style={{ position: "absolute", top: 10, right: 10, cursor: "pointer" }}
+                      onClick={() => deleteAction(event, index)}
+                    >
+                      <DeleteOutlined />
+                    </div>
+                  </div>
+                ) : null}
+                {item.type === "componentMethod" ? (
+                  <div key="componentMethod" className="border border-[#aaa] m-[10px] p-[10px] relative">
+                    <div className="text-[blue]">组件方法</div>
+                    <div>{getComponentById(item.config.componentId, components)?.desc}</div>
+                    <div>{item.config.componentId}</div>
+                    <div>{item.config.method}</div>
                     <div
                       style={{ position: "absolute", top: 10, right: 30, cursor: "pointer" }}
                       onClick={() => editAction(item, index)}

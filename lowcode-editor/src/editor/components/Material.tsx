@@ -13,6 +13,7 @@ export function Material() {
     return Object.values(componentConfig).filter(item => item.name !== "Page");
   }, [componentConfig]);
 
+
   return (
     <div>
       {components.map((item, index) => {

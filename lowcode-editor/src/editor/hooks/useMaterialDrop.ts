@@ -11,7 +11,7 @@ export function useMaterialDrop(accept: string[], id: number) {
   const { componentConfig } = useComponentConfigStore();
 
   const [{ canDrop }, dropRef] = useDrop(() => ({
-    accept,
+    accept, // 接受哪些组件
     drop: (item: { type: string }, monitor) => {
       const didDrop = monitor.didDrop();
       // 防止已经拖拽过的组件目标重复拖拽，所以我们要精准拖拽

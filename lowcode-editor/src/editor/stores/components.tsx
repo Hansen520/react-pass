@@ -65,6 +65,7 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
         component.parentId = parentId;
         return { components: [...state.components] };
       }
+      console.log(component, 68);
       return { components: [...state.components, component] };
     }),
   deleteComponent: (componentId) => {

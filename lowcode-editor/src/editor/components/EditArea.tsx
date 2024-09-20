@@ -28,15 +28,11 @@ export function EditArea() {
 
   /* 递归渲染组件 */
   function renderComponents(components: Component[]): React.ReactNode {
-    console.log(components, 31);
     return components.map((component: Component) => {
       const config = componentConfig?.[component.name];
-
       if (!config?.dev) {
         return null;
       }
-      // console.log(config.component, 51);
-
       return createElement(
         config.dev,
         {
