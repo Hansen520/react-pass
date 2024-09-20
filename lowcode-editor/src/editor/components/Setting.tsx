@@ -7,7 +7,7 @@ import { useComponentsStore } from "../stores/components";
 import { Segmented } from "antd";
 import { useState } from "react";
 import { ComponentAttr } from "./ComponentAttr";
-import { ComponentEvent } from "./ComponentEvent";
+import { ComponentEvent2 } from "./ComponentEvent";
 import { ComponentStyle } from "./ComponentStyle";
 
 export function Setting() {
@@ -23,7 +23,7 @@ export function Setting() {
       <div className="pt-[20px]">
         {key === "属性" && <ComponentAttr />}
         {key === "样式" && <ComponentStyle />}
-        {key === "事件" && <ComponentEvent />}
+        {key === "事件" && <ComponentEvent2 />}
       </div>
     </div>
   );
