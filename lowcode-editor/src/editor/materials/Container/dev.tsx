@@ -4,16 +4,34 @@
  */
 import { CommonComponentProps } from "../../interface";
 import { useMaterialDrop } from "../../hooks/useMaterialDrop";
+import { useDrag } from "react-dnd";
+import { useEffect, useRef } from "react";
 
-const Dev = ({ id, children, styles }: CommonComponentProps) => {
-  const { dropRef } = useMaterialDrop(["Button", "Container"], id);
-  console.log('container');
+const Dev = ({ id, name, children, styles }: CommonComponentProps) => {
+  const { canDrop, dropRef } = useMaterialDrop(["Button", "Container", "Table"], id);
+  
+  const divRef = useRef<HTMLDivElement>(null);
+
+  const [, drag] = useDrag({
+    type: name,
+    item: {
+      type: name,
+      dragType: 'move',
+      id: id
+    }
+  })
+
+  useEffect(() => {
+    dropRef(divRef);
+    drag(divRef);
+}, []);
+
   return (
     <div
       style={styles}
       data-component-id={id}
-      ref={dropRef}
-      className="border-[1px] border-[#000] min-h-[100px] p-[20px]"
+      ref={divRef}
+      className={`min-h-[100px] p-[20px] ${ canDrop ? 'border-[2px] border-[blue]' : 'border-[1px] border-[#000]'}`}
     >
       {children}
     </div>

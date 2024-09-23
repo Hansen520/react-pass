@@ -11,6 +11,10 @@ import PageDev from "../materials/Page/dev"; /* 用于编辑环境 */
 import PageProd from "../materials/Page/prod"; /* 用于预览环境 */
 import ModalDev from "../materials/Modal/dev"; /* 用于编辑环境 */
 import ModalProd from "../materials/Modal/prod"; /* 用于预览环境 */
+import TableDev from "../materials/Table/dev";
+import TableProd from "../materials/Table/prod";
+import TableColumnDev from '../materials/TableColumn/dev';
+import TableColumnProd from '../materials/TableColumn/prod';
 
 export interface ComponentSetter {
   name: string;
@@ -145,6 +149,58 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       dev: ModalDev,
       prod: ModalProd,
     },
+    Table: {
+      name: "Table",
+      defaultProps: {},
+      desc: "表格",
+      setter: [
+        {
+          name: "url",
+          label: "url",
+          type: "input",
+        },
+      ],
+      dev: TableDev,
+      prod: TableProd,
+    },
+    TableColumn: {
+      name: "TableColumn",
+      desc: "表格列",
+      defaultProps: {
+        dataIndex: `col_${new Date().getTime()}`,
+        title: "列名",
+      },
+      setter: [
+        {
+          name: "type",
+          label: "类型",
+          type: "select",
+          options: [
+            {
+              label: "文本",
+              value: "text",
+            },
+            {
+              label: "日期",
+              value: "date",
+            },
+          ],
+        },
+        {
+          name: "title",
+          label: "标题",
+          type: "input",
+        },
+        {
+          name: "dataIndex",
+          label: "字段",
+          type: "input",
+        },
+      ],
+      dev: TableColumnDev,
+      prod: TableColumnProd,
+    },
+
     Page: {
       name: "Page",
       defaultProps: {},
