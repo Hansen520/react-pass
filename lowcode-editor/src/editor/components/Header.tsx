@@ -12,7 +12,7 @@ export function Header() {
   return (
     <div className='w-[100%] h-[100%]'>
       <div className='h-[50px] flex justify-between items-center px-[20px]'>
-        <div>低代码编辑器</div>
+        <div> 山重水复疑无路，柳暗花明又一村！ low-code 编辑器</div>
         <Space>
           {mode === 'edit' && (
             <Button
