@@ -13,8 +13,12 @@ import ModalDev from "../materials/Modal/dev"; /* 用于编辑环境 */
 import ModalProd from "../materials/Modal/prod"; /* 用于预览环境 */
 import TableDev from "../materials/Table/dev";
 import TableProd from "../materials/Table/prod";
-import TableColumnDev from '../materials/TableColumn/dev';
-import TableColumnProd from '../materials/TableColumn/prod';
+import TableColumnDev from "../materials/TableColumn/dev";
+import TableColumnProd from "../materials/TableColumn/prod";
+import FormDev from "../materials/Form/dev";
+import FormProd from "../materials/Form/prod";
+import FormItemDev from "../materials/FormItem/dev";
+import FormItemProd from "../materials/FormItem/prod";
 
 export interface ComponentSetter {
   name: string;
@@ -63,7 +67,6 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       dev: ContainerDev, // 拿到对应的组件做后续的渲染
       prod: ContainerProd,
     },
-
     Button: {
       name: "Button",
       defaultProps: {
@@ -200,7 +203,80 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       dev: TableColumnDev,
       prod: TableColumnProd,
     },
-
+    Form: {
+      name: "Form",
+      defaultProps: {},
+      desc: "表单",
+      setter: [
+        {
+          name: "title",
+          label: "标题",
+          type: "input",
+        },
+      ],
+      events: [ // 组件上面的事件属性
+        {
+          name: "onFinish",
+          label: "提交事件",
+        },
+      ],
+      methods: [
+        {
+          name: 'submit',
+          label: '提交',
+        }
+      ],
+      dev: FormDev,
+      prod: FormProd,
+    },
+    FormItem: {
+      name: "FormItem",
+      desc: "表单项",
+      defaultProps: {
+        name: new Date().getTime(),
+        label: "姓名",
+      },
+      dev: FormItemDev,
+      prod: FormItemProd,
+      setter: [// FormItem的各种属性
+        {
+          name: "type",
+          label: "类型",
+          type: "select",
+          options: [
+            {
+              label: "文本",
+              value: "input",
+            },
+            {
+              label: "日期",
+              value: "date",
+            },
+          ],
+        },
+        {
+          name: "label",
+          label: "标题",
+          type: "input",
+        },
+        {
+          name: "name",
+          label: "字段",
+          type: "input",
+        },
+        {
+          name: "rules",
+          label: "校验",
+          type: "select",
+          options: [
+            {
+              label: "必填",
+              value: "required",
+            },
+          ],
+        },
+      ],
+    },
     Page: {
       name: "Page",
       defaultProps: {},

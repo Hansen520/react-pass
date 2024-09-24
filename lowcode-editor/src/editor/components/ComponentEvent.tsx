@@ -153,6 +153,7 @@ export function ComponentEvent2() {
   });
 
   function handleModalOk(config?: ActionConfig) {
+    console.log(config, 156);
     if (!config || !curEvent || !curComponent) {
       return;
     }
