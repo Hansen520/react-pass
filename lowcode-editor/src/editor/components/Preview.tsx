@@ -21,7 +21,6 @@ export function Preview() {
       const eventConfig = component.props[event.name];
 
       if (eventConfig) {
-        console.log(props[event.name], props, event.name, 24);
         props[event.name] = (...args: any[]) => {
           eventConfig?.actions?.forEach((action: ActionConfig) => {
             if (action.type === "goToLink" && action?.url) {
@@ -35,7 +34,6 @@ export function Preview() {
             } else if (action.type === 'customJS') {
                 // args 可以获取finish中拿到的参数
                 const func = new Function('context', 'args', action.code); // 这个可以把字符串改为可执行的js运行代码
-                console.log(args, 37);
                 func({
                     name: component.name,
                     props: component.props,
