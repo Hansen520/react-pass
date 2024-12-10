@@ -1,0 +1,22 @@
+.upload-input {
+  display: inline-block;
+}
+.upload-file-input {
+  display: none;
+}
+
+.upload-dragger {
+  background: #eee;
+  border: 1px dashed #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 20px;
+  width: 200px;
+  height: 100px;
+  text-align: center;
+
+  &.is-dragover {
+    border: 2px dashed blue;
+    background: rgba(blue, 0.3);
+  }
+}
