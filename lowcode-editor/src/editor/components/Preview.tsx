@@ -63,7 +63,7 @@ export function Preview() {
       if (!config?.prod) {
         return null;
       }
-
+console.log(handleEvent(component), 66);
       return React.createElement(
         config.prod,
         {
@@ -76,6 +76,8 @@ export function Preview() {
           ...component.props,
           ...handleEvent(component),
         },
+
+        
         renderComponents(component.children || [])
       );
     });

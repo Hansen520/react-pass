@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-08-22 16:51:50
- * @Description: description
+ * @Description: 这是对组件方法的单独的处理
  */
 import { useState } from "react";
 import { Collapse, Select, CollapseProps, Button } from "antd";

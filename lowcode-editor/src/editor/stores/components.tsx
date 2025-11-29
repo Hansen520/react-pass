@@ -57,16 +57,18 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
 
         if (parentComponent) {
           if (parentComponent.children) {
+            // console.log(component, 60);
             parentComponent.children.push(component);
           } else {
             parentComponent.children = [component];
           }
+          
         }
-
+        console.log(parentComponent, 66);
         component.parentId = parentId;
         return { components: [...state.components] };
       }
-      console.log(component, 68);
+      // console.log(component, 68);
       return { components: [...state.components, component] };
     }),
   deleteComponent: (componentId) => {
